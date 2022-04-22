@@ -1,3 +1,4 @@
+use dotenv_codegen::dotenv;
 use rpassword::read_password;
 use serde::Deserialize;
 use std::collections::HashMap;
@@ -22,10 +23,7 @@ fn main() {
     map.insert("password", &admin_password);
 
     let client = reqwest::blocking::Client::new();
-    let res = client
-        .post("https://api.patientprogress.ca/api/auth")
-        .json(&map)
-        .send();
+    let res = client.post(dotenv!("URI")).json(&map).send();
 
     let response_text = res.unwrap().text().unwrap();
 
